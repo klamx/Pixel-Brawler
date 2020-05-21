@@ -1,7 +1,7 @@
 import pygame
 from Jugador import Jugador
 ANCHO = 500
-ALTO = 400
+ALTO = 340
 NEGRO=[0,0,0]
 VERDE=[0,255,0]
 ROJO=[255,0,0]
@@ -42,6 +42,10 @@ if __name__ == '__main__':
 	jugadores = pygame.sprite.Group()
 
 	# Imagenes
+	# Backgrounds
+	background1 = pygame.image.load('Backgrounds/Battleground2a.png')
+
+	# Jugador
 	man_idle = pygame.image.load('Sprites/Man/Man_idle.png')
 	man_death = pygame.image.load('Sprites/Man/Man_death.png')
 	man_hurt = pygame.image.load('Sprites/Man/Man_hurt.png')
@@ -58,7 +62,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_idle.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_idle.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -66,7 +70,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_death.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_death.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -74,15 +78,15 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_attack.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_attack.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
-	# accion 3 walk left
+	# accion 3 walk right
 	for j in range(1):
 		fila = []
 		for c in range(6):
-			cuadro = man_walk.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_walk.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -90,7 +94,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(2):
-			cuadro = man_hurt.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_hurt.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -98,7 +102,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_idle_left.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_idle_left.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -106,7 +110,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_death_left.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_death_left.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -114,7 +118,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(4):
-			cuadro = man_attack_letf.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_attack_letf.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -122,7 +126,7 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(6):
-			cuadro = man_walk_left.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_walk_left.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
@@ -130,15 +134,16 @@ if __name__ == '__main__':
 	for j in range(1):
 		fila = []
 		for c in range(2):
-			cuadro = man_hurt_left.subsurface(48 * c, 48 * j, 48, 48)
+			cuadro = man_hurt_left.subsurface(96 * c, 96 * j, 96, 96)
 			fila.append(cuadro)
 		m.append(fila)
 
-	jugador = Jugador([100, 100], m)
+	jugador = Jugador([50, 240], m)
 	jugadores.add(jugador)
 
 	# fuente = pygame.font.Font(None, 40)
 	# mensaje = fuente.render('Juego', True, BLANCO)
+
 	fin_juego = False
 	# Seccion de eventos
 	while (not fin) and (not fin_juego):
@@ -184,7 +189,7 @@ if __name__ == '__main__':
 
 		# Refresco
 		jugadores.update()
-		ventana.fill(NEGRO)
+		ventana.blit(background1, [0, 0])
 		jugadores.draw(ventana)
 		pygame.display.flip()
 		reloj.tick(13)
