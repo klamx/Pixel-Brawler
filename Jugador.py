@@ -36,6 +36,10 @@ class Jugador(pygame.sprite.Sprite):
 		else:
 			self.con = 0
 
-
-
 		self.image = self.m[self.accion][self.con]
+
+
+	def RetPos(self):
+		x = self.rect.x
+		y = self.rect.y
+		return [x, y]

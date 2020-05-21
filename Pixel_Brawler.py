@@ -44,6 +44,12 @@ if __name__ == '__main__':
 	# Imagenes
 	# Backgrounds
 	background1 = pygame.image.load('Backgrounds/Battleground2a.png')
+	background1_info = background1.get_rect()
+	background1_velx = 0
+	background1_posx = 0
+	limite_derecho = 350
+	background1_limite_derecho = ANCHO - background1_info[2]
+
 
 	# Jugador
 	man_idle = pygame.image.load('Sprites/Man/Man_idle.png')
@@ -186,13 +192,29 @@ if __name__ == '__main__':
 					jugador.velx = 0
 
 		# Control
+		# Desplazamiento fondo
+		if jugador.rect.x > limite_derecho:
+			jugador.rect.x = limite_derecho
+
+			if background1_posx > background1_limite_derecho:
+				background1_velx = -5
+
+			else:
+				background1_velx = 0
+
+		else:
+			background1_velx = 0
+
+		if jugador.rect.x < -20:
+			jugador.rect.x = -20
 
 		# Refresco
 		jugadores.update()
-		ventana.blit(background1, [0, 0])
+		ventana.blit(background1, [background1_posx, 0])
 		jugadores.draw(ventana)
 		pygame.display.flip()
 		reloj.tick(13)
+		background1_posx += background1_velx
 
 	# Fin de juego
 	fuente = pygame.font.Font(None, 40)
