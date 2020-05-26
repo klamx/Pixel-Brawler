@@ -1,5 +1,6 @@
 import pygame
 from Jugador import Jugador
+from Goblin import Goblin
 ANCHO = 500
 ALTO = 340
 NEGRO=[0,0,0]
@@ -40,6 +41,7 @@ if __name__ == '__main__':
 	# Seccion de configuracion del nivel
 	# Grupos
 	jugadores = pygame.sprite.Group()
+	goblins = pygame.sprite.Group()
 
 	# Imagenes
 	# Backgrounds
@@ -63,6 +65,11 @@ if __name__ == '__main__':
 	man_walk_left = pygame.image.load('Sprites/Man/Man_walk_left.png')
 	man_attack_letf = pygame.image.load('Sprites/Man/Man_attack_left.png')
 
+	# Goblin
+	goblin_right = pygame.image.load('Sprites/Goblin/goblin.centurion.png')
+	goblin_left = pygame.image.load('Sprites/Goblin/goblin.centurion_left.png')
+
+	# Sprites jugador
 	m = []
 	# accion 0 idle
 	for j in range(1):
@@ -144,8 +151,27 @@ if __name__ == '__main__':
 			fila.append(cuadro)
 		m.append(fila)
 
+	# Sprites goblin
+	matriz_goblin = []
+	for j in range(4):
+		fila = []
+		for c in range(10):
+			cuadro = goblin_right.subsurface(32 * c, 64 * j, 32, 64)
+			fila.append(cuadro)
+		matriz_goblin.append(fila)
+
+	for j in range(4):
+		fila = []
+		for c in range(10):
+			cuadro = goblin_left.subsurface(32 * c, 64 * j, 32, 64)
+			fila.append(cuadro)
+		matriz_goblin.append(fila)
+
 	jugador = Jugador([50, 240], m)
 	jugadores.add(jugador)
+
+	goblin = Goblin([250, 240], matriz_goblin)
+	goblins.add(goblin)
 
 	# fuente = pygame.font.Font(None, 40)
 	# mensaje = fuente.render('Juego', True, BLANCO)
@@ -170,6 +196,7 @@ if __name__ == '__main__':
 					jugador.dir = 0
 					jugador.accion = 8
 					jugador.velx = -5
+					#jugador.rect.x = jugador.rect.x - 48
 
 				# Golpear 
 				if event.key == pygame.K_c:
@@ -210,8 +237,10 @@ if __name__ == '__main__':
 
 		# Refresco
 		jugadores.update()
+		goblins.update()
 		ventana.blit(background1, [background1_posx, 0])
 		jugadores.draw(ventana)
+		goblins.draw(ventana)
 		pygame.display.flip()
 		reloj.tick(13)
 		background1_posx += background1_velx
