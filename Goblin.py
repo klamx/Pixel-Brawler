@@ -3,8 +3,9 @@ import pygame
 class Goblin(pygame.sprite.Sprite):
 	def __init__(self, posicion, m):
 		pygame.sprite.Sprite.__init__(self)
+		self.radius = 8
 		self.m = m
-		self.con = 0
+		self.con = 9
 		self.accion = 0
 		self.image = self.m[self.accion][0]
 		self.rect = self.image.get_rect()
@@ -15,9 +16,9 @@ class Goblin(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.x += self.velx
 
-		if self.con < 6:
-			self.con += 1
+		if self.con > 5:
+			self.con -= 1
 		else:
-			self.con = 0
+			self.con = 9
 
 		self.image = self.m[self.accion][self.con]

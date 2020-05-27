@@ -69,6 +69,11 @@ if __name__ == '__main__':
 	goblin_right = pygame.image.load('Sprites/Goblin/goblin.centurion.png')
 	goblin_left = pygame.image.load('Sprites/Goblin/goblin.centurion_left.png')
 
+	# Corazones
+	corazonx16 = pygame.image.load('Sprites/Heart/heart_16x16.png')
+	corazonx16gray = pygame.image.load('Sprites/Heart/heart_16x16_gray.png')
+	corazonx32 = pygame.image.load('Sprites/Heart/heart_32x32.png')
+
 	# Sprites jugador
 	m = []
 	# accion 0 idle
@@ -153,24 +158,24 @@ if __name__ == '__main__':
 
 	# Sprites goblin
 	matriz_goblin = []
-	for j in range(4):
-		fila = []
-		for c in range(10):
-			cuadro = goblin_right.subsurface(32 * c, 64 * j, 32, 64)
-			fila.append(cuadro)
-		matriz_goblin.append(fila)
+	#for j in range(4):
+	#	fila = []
+	#	for c in range(10):
+	#		cuadro = goblin_right.subsurface(64 * c, 128 * j, 64, 128)
+	#		fila.append(cuadro)
+	#	matriz_goblin.append(fila)
 
 	for j in range(4):
 		fila = []
 		for c in range(10):
-			cuadro = goblin_left.subsurface(32 * c, 64 * j, 32, 64)
+			cuadro = goblin_left.subsurface(64 * c, 128 * j, 64, 128)
 			fila.append(cuadro)
 		matriz_goblin.append(fila)
 
 	jugador = Jugador([50, 240], m)
 	jugadores.add(jugador)
 
-	goblin = Goblin([250, 240], matriz_goblin)
+	goblin = Goblin([490, 210], matriz_goblin)
 	goblins.add(goblin)
 
 	# fuente = pygame.font.Font(None, 40)
@@ -235,14 +240,29 @@ if __name__ == '__main__':
 		if jugador.rect.x < -20:
 			jugador.rect.x = -20
 
+
+		# Control Goblins
+		for g in goblins:
+			if pygame.sprite.collide_circle(jugador, g):
+				g.accion = 2
+				g.velx = 0
+			else:
+				g.accion = 0
+				g.velx = -5
+
+
+		# Control vidas
+
+
 		# Refresco
 		jugadores.update()
 		goblins.update()
 		ventana.blit(background1, [background1_posx, 0])
+		ventana.blit(corazonx16, [50, 50])
 		jugadores.draw(ventana)
 		goblins.draw(ventana)
 		pygame.display.flip()
-		reloj.tick(13)
+		reloj.tick(12)
 		background1_posx += background1_velx
 
 	# Fin de juego

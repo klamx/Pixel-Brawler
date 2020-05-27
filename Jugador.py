@@ -3,6 +3,7 @@ import pygame
 class Jugador(pygame.sprite.Sprite):
 	def __init__(self, posicion, m):
 		pygame.sprite.Sprite.__init__(self)
+		self.radius = 10
 		self.m = m
 		self.dir = 1
 		self.con = 0
@@ -30,6 +31,7 @@ class Jugador(pygame.sprite.Sprite):
 		#	self.accion = 5
 		#else:
 		#	self.accion = 0
+
 
 		if self.con < self.limite:
 			self.con += 1
