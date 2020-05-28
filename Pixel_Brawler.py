@@ -1,6 +1,8 @@
 import pygame
 from Jugador import Jugador
 from Goblin import Goblin
+from Arrow import Arrow
+
 ANCHO = 500
 ALTO = 340
 NEGRO=[0,0,0]
@@ -16,11 +18,13 @@ if __name__ == '__main__':
 	fin = False
 	reloj = pygame.time.Clock()
 
-
 	# Seccion de presentacion
-	pygame.font.init()
-	fuente = pygame.font.Font(None, 40)
-	mensaje = fuente.render('Inicio', True, BLANCO)
+	bg_inicio = pygame.image.load('Backgrounds/inicio.png')
+	arrow = pygame.image.load('Sprites/arrow.png')
+	
+	flechas = pygame.sprite.Group()
+	flecha = Arrow([50, 195], arrow)
+	flechas.add(flecha)
 
 	while (not fin) and (not presentacion):
 		# Gestion de eventos
@@ -30,11 +34,27 @@ if __name__ == '__main__':
 				fin = True
 
 			if event.type == pygame.KEYDOWN:
-				presentacion = True
-				print presentacion
+				#presentacion = True
+				#print presentacion
+				if event.key == pygame.K_DOWN:
+					flecha.rect.y = 240
+
+				if event.key == pygame.K_UP:
+					flecha.rect.y = 195
+
+				if flecha.rect.y == 195 and event.key == pygame.K_RETURN:
+					presentacion = True
+					flechas.remove(flecha)
+
+				if flecha.rect.y == 240 and event.key == pygame.K_RETURN:
+					presentacion = True
+					fin = True
+
 
 		ventana.fill(NEGRO)
-		ventana.blit(mensaje, [450, 350])
+		ventana.blit(bg_inicio, [0, 0])
+		flechas.update()
+		flechas.draw(ventana)
 		pygame.display.flip()
 
 
@@ -51,7 +71,6 @@ if __name__ == '__main__':
 	background1_posx = 0
 	limite_derecho = 350
 	background1_limite_derecho = ANCHO - background1_info[2]
-
 
 	# Jugador
 	man_idle = pygame.image.load('Sprites/Man/Man_idle.png')
