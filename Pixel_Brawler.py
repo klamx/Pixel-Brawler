@@ -1,6 +1,9 @@
 import pygame
+import random
 from Jugador import Jugador
 from Goblin import Goblin
+from Generador import Generador
+
 ANCHO = 500
 ALTO = 340
 NEGRO=[0,0,0]
@@ -15,6 +18,7 @@ if __name__ == '__main__':
 	presentacion = False
 	fin = False
 	reloj = pygame.time.Clock()
+	numero_goblins = 6
 
 
 	# Seccion de presentacion
@@ -42,6 +46,7 @@ if __name__ == '__main__':
 	# Grupos
 	jugadores = pygame.sprite.Group()
 	goblins = pygame.sprite.Group()
+	generadores = pygame.sprite.Group()
 
 	# Imagenes
 	# Backgrounds
@@ -175,8 +180,12 @@ if __name__ == '__main__':
 	jugador = Jugador([50, 240], m)
 	jugadores.add(jugador)
 
-	goblin = Goblin([490, 210], matriz_goblin)
-	goblins.add(goblin)
+	#goblin = Goblin([490, 210], matriz_goblin)
+	#goblins.add(goblin)
+
+	generador1 = Generador([420, 184])
+	#generador1 = Generador([620, 184])
+	generadores.add(generador1)
 
 	# fuente = pygame.font.Font(None, 40)
 	# mensaje = fuente.render('Juego', True, BLANCO)
@@ -241,6 +250,19 @@ if __name__ == '__main__':
 			jugador.rect.x = -20
 
 
+		# Control Generadores
+		for g in generadores:
+			if g.temp < 0 and numero_goblins > 0:
+				centro = list(g.rect.center)
+				goblin = Goblin([centro[0], centro[1]], matriz_goblin)
+				numero_goblins -= 1
+				g.temp = 50
+				print centro[0], centro[1]
+				goblins.add(goblin)
+
+			g.f_velx = background1_velx
+
+
 		# Control Goblins
 		for g in goblins:
 			if pygame.sprite.collide_circle(jugador, g):
@@ -256,10 +278,12 @@ if __name__ == '__main__':
 
 		# Refresco
 		jugadores.update()
+		generadores.update()
 		goblins.update()
 		ventana.blit(background1, [background1_posx, 0])
 		ventana.blit(corazonx16, [50, 50])
 		jugadores.draw(ventana)
+		generadores.draw(ventana)
 		goblins.draw(ventana)
 		pygame.display.flip()
 		reloj.tick(12)
