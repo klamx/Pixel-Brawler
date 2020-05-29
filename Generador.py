@@ -1,5 +1,5 @@
 import pygame
-import random
+# import random
 
 class Generador(pygame.sprite.Sprite):
 	def __init__(self, pos):
@@ -9,7 +9,7 @@ class Generador(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = pos[0]
 		self.rect.y = pos[1]
-		self.temp = random.randrange(100)
+		self.temp = 30
 		self.f_velx = 0
 
 	def update(self):

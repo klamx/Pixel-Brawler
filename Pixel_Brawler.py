@@ -3,6 +3,7 @@ import random
 from Jugador import Jugador
 from Goblin import Goblin
 from Generador import Generador
+from BarraVida import BarraVida
 
 ANCHO = 500
 ALTO = 340
@@ -47,6 +48,7 @@ if __name__ == '__main__':
 	jugadores = pygame.sprite.Group()
 	goblins = pygame.sprite.Group()
 	generadores = pygame.sprite.Group()
+	barra_vida = pygame.sprite.Group()
 
 	# Imagenes
 	# Backgrounds
@@ -75,8 +77,8 @@ if __name__ == '__main__':
 	goblin_left = pygame.image.load('Sprites/Goblin/goblin.centurion_left.png')
 
 	# Corazones
-	corazonx16 = pygame.image.load('Sprites/Heart/heart_16x16.png')
-	corazonx16gray = pygame.image.load('Sprites/Heart/heart_16x16_gray.png')
+	corazon1 = pygame.image.load('Sprites/Heart/heart_16x16.png')
+	corazon1gray = pygame.image.load('Sprites/Heart/heart_16x16_gray.png')
 	corazonx32 = pygame.image.load('Sprites/Heart/heart_32x32.png')
 
 	# Sprites jugador
@@ -183,9 +185,12 @@ if __name__ == '__main__':
 	#goblin = Goblin([490, 210], matriz_goblin)
 	#goblins.add(goblin)
 
-	generador1 = Generador([420, 184])
-	#generador1 = Generador([620, 184])
+	#generador1 = Generador([420, 184])
+	generador1 = Generador([620, 184])
 	generadores.add(generador1)
+
+	barra = BarraVida([10, 20], 100, 15)
+	barra_vida.add(barra)
 
 	# fuente = pygame.font.Font(None, 40)
 	# mensaje = fuente.render('Juego', True, BLANCO)
@@ -256,7 +261,7 @@ if __name__ == '__main__':
 				centro = list(g.rect.center)
 				goblin = Goblin([centro[0], centro[1]], matriz_goblin)
 				numero_goblins -= 1
-				g.temp = 50
+				g.temp = 30
 				print centro[0], centro[1]
 				goblins.add(goblin)
 
@@ -268,22 +273,59 @@ if __name__ == '__main__':
 			if pygame.sprite.collide_circle(jugador, g):
 				g.accion = 2
 				g.velx = 0
+				if jugador.vidas >= 0:
+					if jugador.salud >= 0:
+						jugador.salud -= g.damage
+						barra.dim_an -= g.damage
+						print jugador.salud
+					else:
+						jugador.vidas -= 1
+						jugador.salud = 100
+
+				if jugador.accion == 2 or jugador.accion == 7:
+					if g.salud >= 0:
+						g.salud -= jugador.damage
+					else:
+						goblins.remove(g)
+
 			else:
 				g.accion = 0
 				g.velx = -5
 
 
+		if jugador.vidas == 0:
+			fin_juego = True
 		# Control vidas
+
+		
 
 
 		# Refresco
 		jugadores.update()
 		generadores.update()
 		goblins.update()
-		ventana.blit(background1, [background1_posx, 0])
-		ventana.blit(corazonx16, [50, 50])
-		jugadores.draw(ventana)
+		barra_vida.update()
 		generadores.draw(ventana)
+		ventana.blit(background1, [background1_posx, 0])
+		# ventana.blit(corazonx16, [50, 50])
+		if jugador.vidas == 3:
+			ventana.blit(corazon1, [130, 15])
+			ventana.blit(corazon1, [150, 15])
+			ventana.blit(corazon1, [170, 15])
+		elif jugador.vidas == 2:
+			ventana.blit(corazon1, [130, 15])
+			ventana.blit(corazon1, [150, 15])
+			ventana.blit(corazon1gray, [170, 15])
+		elif jugador.vidas == 1:
+			ventana.blit(corazon1, [130, 15])
+			ventana.blit(corazon1gray, [150, 15])
+			ventana.blit(corazon1gray, [170, 15])
+		elif jugador.vidas == 0:
+			ventana.blit(corazon1gray, [130, 15])
+			ventana.blit(corazon1gray, [150, 15])
+			ventana.blit(corazon1gray, [170, 15])
+		barra_vida.draw(ventana)
+		jugadores.draw(ventana)
 		goblins.draw(ventana)
 		pygame.display.flip()
 		reloj.tick(12)
@@ -300,5 +342,5 @@ if __name__ == '__main__':
 				fin = True
 
 		ventana.fill(NEGRO)
-		ventana.blit(mensaje, [450, 350])
+		ventana.blit(mensaje, [200, 200])
 		pygame.display.flip()
