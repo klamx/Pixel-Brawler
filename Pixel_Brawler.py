@@ -6,7 +6,6 @@ from Goblin import Goblin
 from Arrow import Arrow
 #=======
 from Generador import Generador
-from BarraVida import BarraVida
 #>>>>>>> config_vidas
 
 ANCHO = 500
@@ -17,6 +16,10 @@ ROJO=[255,0,0]
 AZUL=[0,0,255]
 AMARILLO=[255,255,0]
 BLANCO=[255,255,255]
+
+def barra_vida(ventana, punto_a, punto_b, resta = 0, suma = 0):
+	pygame.draw.line(ventana, ROJO, punto_a, [punto_b[0], punto_b[1]], 7)
+
 
 if __name__ == '__main__':
 	ventana = pygame.display.set_mode([ANCHO, ALTO])
@@ -70,7 +73,6 @@ if __name__ == '__main__':
 	jugadores = pygame.sprite.Group()
 	goblins = pygame.sprite.Group()
 	generadores = pygame.sprite.Group()
-	barra_vida = pygame.sprite.Group()
 
 	# Imagenes
 	# Backgrounds
@@ -210,12 +212,11 @@ if __name__ == '__main__':
 	generador1 = Generador([620, 184])
 	generadores.add(generador1)
 
-	barra = BarraVida([10, 20], 100, 15)
-	barra_vida.add(barra)
 
 	# fuente = pygame.font.Font(None, 40)
 	# mensaje = fuente.render('Juego', True, BLANCO)
-
+	# posicion final de la barra de vida
+	posf_x = 110
 	fin_juego = False
 	# Seccion de eventos
 	while (not fin) and (not fin_juego):
@@ -288,6 +289,8 @@ if __name__ == '__main__':
 
 			g.f_velx = background1_velx
 
+		# Barra
+		#posf_x = 110
 
 		# Control Goblins
 		for g in goblins:
@@ -295,13 +298,14 @@ if __name__ == '__main__':
 				g.accion = 2
 				g.velx = 0
 				if jugador.vidas >= 0:
-					if jugador.salud >= 0:
+					if jugador.salud > 0:
 						jugador.salud -= g.damage
-						barra.dim_an -= g.damage
-						print jugador.salud
+						posf_x -= g.damage
+						print jugador.salud, posf_x
 					else:
 						jugador.vidas -= 1
 						jugador.salud = 100
+						posf_x = 110
 
 				if jugador.accion == 2 or jugador.accion == 7:
 					if g.salud >= 0:
@@ -325,10 +329,9 @@ if __name__ == '__main__':
 		jugadores.update()
 		generadores.update()
 		goblins.update()
-		barra_vida.update()
 		generadores.draw(ventana)
 		ventana.blit(background1, [background1_posx, 0])
-		# ventana.blit(corazonx16, [50, 50])
+		barra_vida(ventana, [10, 20], [posf_x, 20])
 		if jugador.vidas == 3:
 			ventana.blit(corazon1, [130, 15])
 			ventana.blit(corazon1, [150, 15])
@@ -345,7 +348,8 @@ if __name__ == '__main__':
 			ventana.blit(corazon1gray, [130, 15])
 			ventana.blit(corazon1gray, [150, 15])
 			ventana.blit(corazon1gray, [170, 15])
-		barra_vida.draw(ventana)
+		#barra_vida.draw(ventana)
+		
 		jugadores.draw(ventana)
 		goblins.draw(ventana)
 		pygame.display.flip()
