@@ -353,8 +353,10 @@ if __name__ == '__main__':
 		background1_posx += background1_velx
 
 	# Fin de juego
-	fuente = pygame.font.Font(None, 40)
-	mensaje = fuente.render('Fin de juego', True, BLANCO)
+	#fuente = pygame.font.Font(None, 40)
+	#mensaje = fuente.render('Fin de juego', True, BLANCO)
+
+	game_over = pygame.image.load('Backgrounds/GameOver.png')
 
 	while not fin:
 		# Gestion de eventos
@@ -362,6 +364,9 @@ if __name__ == '__main__':
 			if event.type == pygame.QUIT:
 				fin = True
 
+			if event.type == pygame.KEYDOWN:
+				fin = True
+
 		ventana.fill(NEGRO)
-		ventana.blit(mensaje, [200, 200])
+		ventana.blit(game_over, [0, 0])
 		pygame.display.flip()
