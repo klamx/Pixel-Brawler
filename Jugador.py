@@ -14,6 +14,9 @@ class Jugador(pygame.sprite.Sprite):
 		self.rect.y = posicion[1]
 		self.velx = 0
 		self.vely = 0
+		self.salud = 100
+		self.vidas = 3
+		self.damage = 33.3333
 
 		if self.accion == 0 or self.accion == 1 or self.accion == 2 or self.accion == 5 or self.accion == 6 or self.accion == 7:
 			self.limite = 3
